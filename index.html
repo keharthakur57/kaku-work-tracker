@@ -10,81 +10,108 @@
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
-:root{--bg:#0f0b1e;--bg2:#171130;--card:#1e1840;--card2:#261e52;--line:#3a2f6e;--txt:#f1eefb;--mut:#a99fd0;--acc:#8b5cf6;--acc2:#a78bfa;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--blue:#60a5fa;--vio:#a78bfa;--gray:#94a3b8;--r:16px}
+:root{--bg:#0c0918;--bg2:#16102e;--card:#1c1638;--card2:#241c4a;--line:#352b63;--txt:#f3f0fc;--mut:#b0a6d6;
+--acc:#8b5cf6;--acc2:#a78bfa;--accgrad:linear-gradient(135deg,#8b5cf6,#6d28d9);
+--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--blue:#60a5fa;--gray:#94a3b8;--r:18px;
+--shadow:0 8px 28px rgba(6,3,18,.45)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.45}
-#appwrap{max-width:560px;margin:0 auto;min-height:100%;padding-bottom:84px;position:relative}
-header.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#241a4f,#170f33);padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px}
-header.top h1{font-size:17px;font-weight:800;letter-spacing:.4px}
+body{background:radial-gradient(900px 500px at 85% -5%,#2b1e5e 0%,transparent 55%),radial-gradient(700px 420px at -10% 15%,#221a48 0%,transparent 50%),var(--bg);color:var(--txt);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+#appwrap{max-width:580px;margin:0 auto;min-height:100%;padding-bottom:96px;position:relative}
+:focus-visible{outline:2px solid var(--acc2);outline-offset:2px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+header.top{position:sticky;top:0;z-index:20;background:rgba(16,11,36,.88);backdrop-filter:blur(12px);padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px}
+header.top h1{font-size:16px;font-weight:800;letter-spacing:.5px}
 header.top h1 span{color:var(--acc2)}
 .hdrbtns{display:flex;gap:8px;align-items:center}
-.badge{font-size:11px;font-weight:700;padding:4px 9px;border-radius:99px;background:#31265e;color:var(--mut);white-space:nowrap}
+.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:#31265e;color:var(--mut);white-space:nowrap}
 .badge.warn{background:#4a3a12;color:var(--warn)}
 .badge.ok{background:#123a2b;color:var(--ok)}
-.iconbtn{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:8px 10px;font-size:15px;cursor:pointer}
+.iconbtn{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:9px 12px;font-size:15px;cursor:pointer;min-height:40px}
 main{padding:14px 14px 0}
 .page{display:none}
-.page.on{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
-.card h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:10px}
+.page.on{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card{background:linear-gradient(180deg,var(--card),var(--card) 60%,#191334);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h2{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--mut);margin-bottom:12px;font-weight:700}
+.hero{background:linear-gradient(135deg,#2b2058,#1c1440 65%);border:1px solid #4a3a8a}
+.herotop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.hello{font-size:20px;font-weight:800}
+.hello .wave{font-size:18px}
+.herodate{color:var(--mut);font-size:13px;margin-top:2px}
+.heroshift{text-align:right;font-size:0}
+.herostats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
 .row{display:flex;gap:10px}
 .row>*{flex:1;min-width:0}
-label{display:block;font-size:12px;color:var(--mut);margin:10px 0 5px;font-weight:600}
-input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--txt);padding:12px;font-size:15px;outline:none;font-family:inherit}
-input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+label{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 5px;font-weight:600}
+label.chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--txt);margin:10px 0 2px}
+input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--txt);padding:13px;font-size:15px;outline:none;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(139,92,246,.25)}
 textarea{resize:vertical;min-height:64px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:var(--bg2);color:var(--txt);border-radius:99px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.chip{border:1px solid var(--line);background:var(--bg2);color:var(--txt);border-radius:99px;padding:10px 15px;font-size:13.5px;font-weight:600;cursor:pointer;min-height:42px}
 .chip.sel{background:var(--acc);border-color:var(--acc);color:#fff}
-.chip.s-Present.sel{background:var(--ok);border-color:var(--ok);color:#062}
-.chip.s-Absent.sel{background:var(--bad);border-color:var(--bad)}
-.chip.s-HalfDay.sel{background:var(--warn);border-color:var(--warn);color:#423}
-.btn{display:inline-block;background:var(--acc);color:#fff;border:0;border-radius:14px;padding:14px 18px;font-size:15px;font-weight:700;cursor:pointer;width:100%;text-align:center}
-.btn.sec{background:var(--card2);border:1px solid var(--line);color:var(--txt)}
-.btn.sm{width:auto;padding:9px 14px;font-size:13px;border-radius:12px}
+.chip.s-Present.sel{background:var(--ok);border-color:var(--ok);color:#052e1e}
+.chip.s-Absent.sel{background:var(--bad);border-color:var(--bad);color:#2b0705}
+.chip.s-HalfDay.sel{background:var(--warn);border-color:var(--warn);color:#3a2a05}
+.btn{display:inline-block;background:var(--accgrad);color:#fff;border:0;border-radius:14px;padding:14px 18px;font-size:15px;font-weight:700;cursor:pointer;width:100%;text-align:center;box-shadow:0 4px 16px rgba(109,40,217,.35)}
+.btn.sec{background:var(--card2);border:1px solid var(--line);color:var(--txt);box-shadow:none}
+.btn.sm{width:auto;padding:10px 15px;font-size:13.5px;border-radius:12px;min-height:42px}
 .btn:disabled{opacity:.5}
-.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(53,43,99,.6);font-size:14px;gap:10px}
 .kv:last-child{border-bottom:0}
-.kv b{font-weight:700}
-.stat{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.kv b{font-weight:700;text-align:right}
+.stat{background:rgba(22,16,46,.85);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
 .stat .v{font-size:20px;font-weight:800}
 .stat .l{font-size:11px;color:var(--mut);margin-top:2px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-nav.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(23,17,51,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:space-around;max-width:560px;margin:0 auto;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
-nav.bottom button{flex:1;background:0;border:0;color:var(--mut);font-size:10.5px;font-weight:600;padding:6px 2px;cursor:pointer;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(20,14,44,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:space-around;max-width:580px;margin:0 auto;padding:6px 4px calc(8px + env(safe-area-inset-bottom))}
+nav.bottom button{flex:1;background:0;border:0;color:var(--mut);font-size:10.5px;font-weight:600;padding:6px 2px;cursor:pointer;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:48px}
 nav.bottom button .i{font-size:19px}
 nav.bottom button.on{color:var(--acc2);background:#2a2154}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
-.cal .h{font-size:10px;color:var(--mut);text-align:center;font-weight:700}
-.cal .d{aspect-ratio:1;border-radius:10px;background:var(--bg2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;cursor:pointer;position:relative}
-.cal .d.dim{opacity:.35}
-.cal .d.today{border-color:var(--acc);border-width:2px}
-.cal .d .dot{width:7px;height:7px;border-radius:99px;margin-top:2px}
+.cal .h{font-size:10px;color:var(--mut);text-align:center;font-weight:700;padding:4px 0}
+.cal .d{aspect-ratio:1;border-radius:12px;background:var(--bg2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;cursor:pointer;position:relative}
+.cal .d:hover{border-color:var(--acc)}
+.cal .d.dim{opacity:.3}
+.cal .d.today{border-color:var(--acc);border-width:2px;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
+.cal .d .dot{width:8px;height:8px;border-radius:99px;margin-top:2px}
 .mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .mnav b{font-size:15px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
 th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
 td.num,th.num{text-align:right}
-.pill{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px}
+.pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;display:inline-block}
+.pill.st-Present{background:rgba(52,211,153,.18);color:var(--ok)}
+.pill.st-Absent{background:rgba(248,113,113,.18);color:var(--bad)}
+.pill.st-HalfDay{background:rgba(251,191,36,.18);color:var(--warn)}
+.pill.st-Leave{background:rgba(96,165,250,.18);color:var(--blue)}
+.pill.st-Holiday{background:rgba(167,139,250,.18);color:var(--acc2)}
+.pill.st-SundayOff{background:rgba(148,163,184,.18);color:var(--gray)}
+.pill.shift{background:var(--card2);color:var(--txt);margin-left:4px}
+.pill.pend{background:rgba(251,191,36,.18);color:var(--warn)}
 canvas{width:100%;height:auto;display:block}
 .syncnote{font-size:12px;color:var(--mut);margin-top:8px}
-.qitem{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
-.hint{font-size:12px;color:var(--mut);margin-top:6px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:100px;background:#2a2154;color:#fff;padding:11px 18px;border-radius:14px;font-size:13.5px;font-weight:600;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.5);display:none;max-width:88%;text-align:center}
+.qitem{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;gap:10px}
+.hint{font-size:12.5px;color:var(--mut);margin-top:6px}
+.hint.warn{color:var(--warn)}
+.empty{padding:18px 10px;text-align:center;color:var(--mut);font-size:13.5px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:104px;background:#2f2560;color:#fff;padding:12px 18px;border-radius:14px;font-size:13.5px;font-weight:600;z-index:60;box-shadow:0 8px 28px rgba(0,0,0,.55);display:none;max-width:88%;text-align:center}
 .err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
-#authscreen{position:fixed;inset:0;z-index:50;background:radial-gradient(1200px 600px at 50% -10%,#33246b, #0f0b1e 60%);display:flex;align-items:center;justify-content:center;padding:20px}
-.authcard{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 22px}
-.authcard h1{font-size:20px;font-weight:800;margin-bottom:4px}
+#authscreen{position:fixed;inset:0;z-index:50;background:radial-gradient(1100px 620px at 50% -10%,#33246b,#0c0918 62%);display:flex;align-items:center;justify-content:center;padding:20px}
+.authcard{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 22px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.authcard h1{font-size:21px;font-weight:800;margin-bottom:4px}
 .authcard h1 span{color:var(--acc2)}
 .authcard p{color:var(--mut);font-size:13px;margin-bottom:16px}
-.biglogo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--acc),#6d28d9);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;margin-bottom:14px}
+.biglogo{width:64px;height:64px;border-radius:18px;background:var(--accgrad);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;margin-bottom:14px;box-shadow:0 8px 24px rgba(109,40,217,.4)}
 details summary{cursor:pointer;color:var(--acc2);font-size:13px;font-weight:600;margin-top:8px}
 pre.code{background:#120d29;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:11px;overflow-x:auto;max-height:180px;overflow-y:auto;white-space:pre}
 ol.steps{padding-left:18px;font-size:13px;color:var(--mut)}
 ol.steps li{margin-bottom:6px}
+@media (min-width:600px){main{padding:18px 18px 0}.card{padding:18px}}
 </style>
 </head>
 <body>
@@ -108,12 +135,22 @@ ol.steps li{margin-bottom:6px}
   <h1>KAKU <span>WORK TRACKER</span></h1>
   <div class="hdrbtns">
     <span class="badge" id="syncbadge">Local</span>
-    <button class="iconbtn" id="pullbtn" title="Pull from Sheets">&#8635;</button>
+    <button class="iconbtn" id="pullbtn" title="Pull from Sheets" aria-label="Pull from Google Sheets">&#8635;</button>
   </div>
 </header>
 <main>
   <!-- TODAY -->
   <section class="page on" id="page-today">
+    <div class="card hero">
+      <div class="herotop">
+        <div>
+          <p class="hello">Hi Kehar <span class="wave">&#128075;</span></p>
+          <p class="herodate" id="hero-date"></p>
+        </div>
+        <div class="heroshift" id="hero-shift"></div>
+      </div>
+      <div class="herostats" id="hero-stats"></div>
+    </div>
     <div class="card">
       <h2>Daily entry</h2>
       <div class="row">
@@ -185,7 +222,7 @@ ol.steps li{margin-bottom:6px}
       <h2>Production &amp; overtime</h2>
       <input type="month" id="p-month">
       <div style="height:8px"></div>
-      <canvas id="p-chart" height="180"></canvas>
+      <canvas id="p-chart" height="180" role="img" aria-label="Production and overtime chart for the selected month"></canvas>
       <div id="p-body" style="margin-top:10px"></div>
     </div>
   </section>
@@ -211,7 +248,8 @@ ol.steps li{margin-bottom:6px}
       <h2>Google Sheets sync</h2>
       <div class="kv"><span>Workbook</span><b style="font-size:12px">KAKU Personal Attendance &amp; Performance Management</b></div>
       <label>Apps Script web app URL</label><input id="s-scripturl" placeholder="https://script.google.com/macros/s/.../exec">
-      <label>Sync secret (any private phrase, set once)</label><input id="s-secret" type="password" placeholder="Private phrase">
+      <label for="s-secret">Sync secret (from the Apps Script log, shown once)</label><input id="s-secret" type="password" autocomplete="off" placeholder="Paste the secret here">
+      <label class="chk"><input type="checkbox" id="s-remember" style="width:auto"> Keep secret on this device (less safe)</label>
       <div style="height:10px"></div>
       <div class="row">
         <button class="btn sec sm" id="s-testconn">Test connection</button>
@@ -221,10 +259,11 @@ ol.steps li{margin-bottom:6px}
       <details><summary>One-time backend setup (about 2 minutes)</summary>
         <ol class="steps">
           <li>Open your Google Sheet &rarr; <b>Extensions &rarr; Apps Script</b>.</li>
-          <li>Delete any code there and paste the KAKU backend code below.</li>
-          <li><b>Deploy &rarr; New deployment &rarr; Web app</b>. Execute as: <b>Me</b>. Who has access: <b>Anyone</b>. Deploy and authorise.</li>
-          <li>Copy the Web app URL into the field above, choose your secret phrase, tap Test connection.</li>
-        </ol>
+          <li>Delete any code there, paste the KAKU backend code below, and save.</li>
+          <li>In the editor select <b>kwtProvision</b> and click Run. Approve the permissions, then <b>View &rarr; Logs</b> and copy the secret it created.</li>
+          <li><b>Deploy &rarr; New deployment &rarr; Web app</b>. Execute as: <b>Me</b>. Who has access: <b>Anyone</b>. Deploy.</li>
+          <li>Paste the Web app URL and your secret above, then Test connection.</li>
+        </ol><p class="hint warn">Security note: "Execute as Me + Anyone" means anyone holding both the web app URL and your secret can write to your sheet. The URL alone can do nothing until you run kwtProvision once, and only you (the sheet owner) can run it. Keep the secret private; rotate it any time with kwtRotateSecret.</p>
         <button class="btn sec sm" id="s-copycode" style="margin-top:8px">Copy backend code</button>
         <div class="err" id="s-copyerr"></div>
         <pre class="code" id="s-codebox">Loading code...</pre>
@@ -244,7 +283,7 @@ ol.steps li{margin-bottom:6px}
       <h2>Daily reminder</h2>
       <div class="kv"><span>Deadline (IST)</span><input id="s-deadline" type="time" style="width:130px"></div>
       <button class="btn sec sm" id="s-deadlinesave" style="margin-top:10px">Save deadline</button>
-      <p class="hint">Fo reads this deadline and reminds you once a day by text if no entry exists for that date. Sundays, holidays and approved leaves are skipped automatically.</p>
+      <p class="hint">Shift-end reminders are already live: Fo texts you at 3:30 PM (A shift), 12:00 AM (B shift) or 6:30 AM (C shift) per your A/C/B roster, from 10 Nov 2026 to 31 Mar 2027. This deadline field is not used by those reminders.</p>
     </div>
 
     <div class="card">
@@ -284,26 +323,19 @@ ol.steps li{margin-bottom:6px}
   <button data-p="set"><span class="i">&#9881;</span>Settings</button>
 </nav>
 </div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="js/core.js"></script>
 <script>
 'use strict';
 /* ---------- helpers ---------- */
 const $=id=>document.getElementById(id);
-const STATUSES=['Present','Absent','Half Day','Leave','Holiday','Sunday Off'];
-const SCOLORS={Present:'#34d399',Absent:'#f87171','Half Day':'#fbbf24',Leave:'#60a5fa',Holiday:'#a78bfa','Sunday Off':'#94a3b8'};
-const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+/* statuses, months, date/time, math, validation and merge helpers live in js/core.js */
 const RKEY='kwt_records',LKEY='kwt_log',CKEY='kwt_cfg',AKEY='kwt_auth';
 function jget(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
 function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
-let records=jget(RKEY,{}),editlog=jget(LKEY,[]),cfg=jget(CKEY,{scriptUrl:'',secret:'',shifts:{},deadline:'20:00'});
-function istToday(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(new Date())}
-function dayName(ds){const[y,m,d]=ds.split('-').map(Number);return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(y,m-1,d).getDay()]}
+let records=jget(RKEY,{}),editlog=jget(LKEY,[]),cfg=jget(CKEY,{scriptUrl:'',shifts:{},deadline:'20:00'});
 function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2600)}
 function showErr(id,m){const e=$(id);e.textContent=m;e.style.display=m?'block':'none'}
-function achv(p,t){if(p===''||p==null||t===''||t==null||Number(t)===0)return null;return Number(p)/Number(t)}
-function fmtPct(x){return x==null?'-':(x*100).toFixed(1)+'%'}
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function monthKey(ds){return ds.slice(0,7)}
 /* ---------- auth ---------- */
 async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function derive(salt,pw){let h=salt+':'+pw;for(let i=0;i<300;i++)h=await sha256(h);return h}
@@ -347,18 +379,21 @@ function saveRec(r){
   }else{records[r.date]=Object.assign({},r,{updated:ts,synced:false});log.push({ts,date:r.date,field:'created',old:'',new:'new entry'})}
   editlog=log.concat(editlog).slice(0,500);jset(LKEY,editlog);jset(RKEY,records);
 }
-function istTs(){const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const g=t=>p.find(x=>x.type===t).value;return g('year')+'-'+g('month')+'-'+g('day')+' '+g('hour')+':'+g('minute')+' IST'}
 function pending(){return Object.values(records).filter(r=>!r.synced)}
+function getSecret(){return sessionStorage.getItem('kwt_secret')||localStorage.getItem('kwt_secret')||''}
+function saveSecret(v){v=String(v||'');sessionStorage.setItem('kwt_secret',v);const rb=$('s-remember');if(rb&&rb.checked)localStorage.setItem('kwt_secret',v);else localStorage.removeItem('kwt_secret')}
 /* ---------- sync ---------- */
 function setBadge(){
   const n=pending().length,b=$('syncbadge');
+  if(window.KWT_DEMO){b.textContent='Demo data';b.className='badge';return}
   if(!cfg.scriptUrl){b.textContent=n?('Local · '+n+' unsynced'):'Local';b.className='badge'+(n?' warn':'')}
   else if(n){b.textContent=n+' unsynced';b.className='badge warn'}
   else{b.textContent='Synced';b.className='badge ok'}
 }
 async function api(action,extra){
+  if(window.KWT_DEMO)throw new Error('Demo mode: sync is disabled');
   if(!cfg.scriptUrl)throw new Error('not-configured');
-  const res=await fetch(cfg.scriptUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({secret:cfg.secret,action},extra||{}))});
+  const res=await fetch(cfg.scriptUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({secret:getSecret(),action},extra||{}))});
   const t=await res.text();let j;try{j=JSON.parse(t)}catch(e){throw new Error('Bad response from script: '+t.slice(0,120))}
   if(!j.ok)throw new Error(j.error||'Unknown error');
   return j;
@@ -383,12 +418,8 @@ async function syncNow(silent){
 async function pull(){
   if(!cfg.scriptUrl)return toast('Connect the Apps Script URL in Settings first');
   try{
-    const j=await api('getAll');let n=0;
-    (j.records||[]).forEach(sr=>{
-      const k=sr.date;const lo=records[k];
-      if(!lo||String(lo.updated||'')<String(sr.updated||'')){records[k]=Object.assign({},sr,{synced:true});n++}
-      else records[k].synced=true;
-    });
+    const j=await api('getAll');
+    const n=mergePulled(records,j.records||[]);
     jset(RKEY,records);setBadge();toast('Pulled '+n+' record(s) from Sheets');renderAll();
   }catch(e){toast('Pull failed: '+e.message)}
 }
@@ -439,7 +470,7 @@ function saveForm(){
     target:(curStatus==='Present'||curStatus==='Half Day')?($('f-target').value||''):'',
     leaveType:curStatus==='Leave'?$('f-leavetype').value:'',holidayName:curStatus==='Holiday'?$('f-holname').value.trim():'',
     remarks:$('f-remarks').value.trim()};
-  saveRec(r);loadForm(date);setBadge();
+  saveRec(r);loadForm(date);setBadge();renderHero();
   toast('Saved'+(records[date].synced?'':' (queued for sync)'));
   syncNow(true);
 }
@@ -454,21 +485,15 @@ function renderCal(){
   for(let d=1;d<=days;d++){
     const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
     const r=records[ds];
-    h+='<div class="d'+(ds===today?' today':'')+'" data-d="'+ds+'">'+d+(r?'<span class="dot" style="background:'+SCOLORS[r.status]+'"></span>':'')+'</div>';
+    const lbl=d+' '+MONTHS[calM]+' '+calY+(r?', '+r.status:'');
+    h+='<div class="d'+(ds===today?' today':'')+'" data-d="'+ds+'" role="button" tabindex="0" aria-label="'+esc(lbl)+'">'+d+(r?'<span class="dot" style="background:'+SCOLORS[r.status]+'"></span>':'')+'</div>';
   }
   $('cal-grid').innerHTML=h;
   $('cal-grid').onclick=e=>{const el=e.target.closest('.d');if(!el||!el.dataset.d)return;switchTab('today');loadForm(el.dataset.d)};
+  $('cal-grid').onkeydown=e=>{if(e.key!=='Enter'&&e.key!==' ')return;const el=e.target.closest('.d');if(!el||!el.dataset.d)return;e.preventDefault();switchTab('today');loadForm(el.dataset.d)};
   $('cal-legend').innerHTML=STATUSES.map(s=>'<span style="color:'+SCOLORS[s]+'">&#9679;</span> '+s).join(' &nbsp; ');
 }
 /* ---------- reports ---------- */
-function agg(list){
-  const a={present:0,absent:0,half:0,leave:0,holiday:0,sunday:0,hours:0,ot:0,prod:0,target:0,n:0};
-  list.forEach(r=>{a.n++;
-    if(r.status==='Present')a.present++;else if(r.status==='Absent')a.absent++;else if(r.status==='Half Day')a.half++;
-    else if(r.status==='Leave')a.leave++;else if(r.status==='Holiday')a.holiday++;else if(r.status==='Sunday Off')a.sunday++;
-    a.hours+=Number(r.hours||0);a.ot+=Number(r.ot||0);a.prod+=Number(r.prod||0);a.target+=Number(r.target||0)});
-  a.achv=a.target?achv(a.prod,a.target):null;return a;
-}
 function renderMonth(){
   const mk=$('r-month').value||monthKey(istToday());$('r-month').value=mk;
   const list=Object.values(records).filter(r=>monthKey(r.date)===mk);
@@ -494,8 +519,8 @@ function renderYear(){
     const a=agg(Object.values(records).filter(r=>monthKey(r.date)===mk));
     rows+='<tr><td>'+m.slice(0,3)+'</td><td class="num">'+a.present+'</td><td class="num">'+a.absent+'</td><td class="num">'+a.leave+'</td><td class="num">'+a.hours.toFixed(0)+'</td><td class="num">'+a.ot.toFixed(0)+'</td><td class="num">'+a.prod+'</td><td class="num">'+fmtPct(a.achv)+'</td></tr>';
   });
-  $('r-yearbody').innerHTML='<table><tr><th>Month</th><th class="num">P</th><th class="num">A</th><th class="num">L</th><th class="num">Hrs</th><th class="num">OT</th><th class="num">Prod</th><th class="num">Achv</th></tr>'+rows+
-    '<tr><td><b>Year</b></td><td class="num"><b>'+ta.present+'</b></td><td class="num"><b>'+ta.absent+'</b></td><td class="num"><b>'+ta.leave+'</b></td><td class="num"><b>'+ta.hours.toFixed(0)+'</b></td><td class="num"><b>'+ta.ot.toFixed(0)+'</b></td><td class="num"><b>'+ta.prod+'</b></td><td class="num"><b>'+fmtPct(ta.achv)+'</b></td></tr></table>';
+  $('r-yearbody').innerHTML='<div class="tblwrap"><table><tr><th>Month</th><th class="num">P</th><th class="num">A</th><th class="num">L</th><th class="num">Hrs</th><th class="num">OT</th><th class="num">Prod</th><th class="num">Achv</th></tr>'+rows+
+    '<tr><td><b>Year</b></td><td class="num"><b>'+ta.present+'</b></td><td class="num"><b>'+ta.absent+'</b></td><td class="num"><b>'+ta.leave+'</b></td><td class="num"><b>'+ta.hours.toFixed(0)+'</b></td><td class="num"><b>'+ta.ot.toFixed(0)+'</b></td><td class="num"><b>'+ta.prod+'</b></td><td class="num"><b>'+fmtPct(ta.achv)+'</b></td></tr></table></div>';
 }
 /* ---------- production ---------- */
 function renderProd(){
@@ -505,9 +530,9 @@ function renderProd(){
   drawChart($('p-chart'),list);
   let h='<div class="kv"><span>Month production</span><b>'+a.prod+' / '+a.target+' ('+fmtPct(a.achv)+')</b></div><div class="kv"><span>Month overtime</span><b>'+a.ot.toFixed(1)+' hrs</b></div>';
   if(!list.length)h+='<p class="hint">No production or overtime entries this month.</p>';
-  else{h+='<table><tr><th>Date</th><th class="num">Prod</th><th class="num">Target</th><th class="num">Eff</th><th class="num">OT</th></tr>';
+  else{h+='<div class="tblwrap"><table><tr><th>Date</th><th class="num">Prod</th><th class="num">Target</th><th class="num">Eff</th><th class="num">OT</th></tr>';
     list.forEach(r=>{const e=achv(r.prod,r.target);h+='<tr><td>'+r.date.slice(8)+'/'+r.date.slice(5,7)+'</td><td class="num">'+esc(r.prod)+'</td><td class="num">'+esc(r.target)+'</td><td class="num">'+fmtPct(e)+'</td><td class="num">'+esc(r.ot)+'</td></tr>'});
-    h+='</table>'}
+    h+='</table></div>'}
   $('p-body').innerHTML=h;
 }
 function drawChart(cv,list){
@@ -527,7 +552,7 @@ function drawChart(cv,list){
 /* ---------- settings ---------- */
 function renderSet(){
   const a=jget(AKEY,{email:''});$('s-email').textContent=a.email||'-';
-  $('s-scripturl').value=cfg.scriptUrl||'';$('s-secret').value=cfg.secret||'';$('s-deadline').value=cfg.deadline||'20:00';
+  $('s-scripturl').value=cfg.scriptUrl||'';$('s-secret').value=getSecret();$('s-deadline').value=cfg.deadline||'20:00';
   const s=cfg.shifts||{};['A','B','C'].forEach(k=>{$('s-'+k+'h').value=(s[k]&&s[k].h)||'';$('s-'+k+'t').value=(s[k]&&s[k].t)||''});
   const q=pending();
   $('s-queueinfo').textContent=cfg.scriptUrl?(q.length?q.length+' record(s) waiting to sync. Records never leave this device until a sync succeeds.':'All local records are synced.'):'Not connected yet. Records are kept safely on this device and sync automatically once you connect.';
@@ -539,10 +564,23 @@ function exportData(kind){
   if(kind==='json'){blob=new Blob([JSON.stringify({exported:istTs(),records:records,editLog:editlog},null,2)],{type:'application/json'})}
   else{
     const head='date,day,status,shift,hours,overtime,production,target,achievement_pct,remarks,leave_type,holiday_name,updated\n';
-    const rows=list.map(r=>[r.date,r.day,r.status,r.shift,r.hours,r.ot,r.prod,r.target,r.prod&&r.target?((r.prod/r.target)*100).toFixed(1):'',(r.remarks||'').replace(/"/g,'""'),r.leaveType||'',r.holidayName||'',r.updated||''].map(v=>'"'+String(v==null?'':v)+'"').join(',')).join('\n');
+    const rows=list.map(r=>[r.date,r.day,r.status,r.shift,r.hours,r.ot,r.prod,r.target,r.prod&&r.target?((r.prod/r.target)*100).toFixed(1):'',r.remarks||'',r.leaveType||'',r.holidayName||'',r.updated||''].map(escCsv).join(',')).join('\n');
     blob=new Blob([head+rows],{type:'text/csv'});
   }
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kaku-work-tracker-'+istToday()+(kind==='json'?'.json':'.csv');a.click();
+}
+/* ---------- today hero ---------- */
+function renderHero(){
+  const t=istToday();
+  $('hero-date').textContent=dayName(t)+', '+Number(t.slice(8))+' '+MONTHS[Number(t.slice(5,7))-1]+' '+t.slice(0,4);
+  const r=records[t],hs=$('hero-shift');
+  if(r&&r.status){hs.innerHTML='<span class="pill st-'+r.status.replace(' ','')+'">'+esc(r.status)+'</span>'+(r.shift?' <span class="pill shift">Shift '+esc(r.shift)+'</span>':'')}
+  else{hs.innerHTML='<span class="pill pend">Not saved yet</span>'}
+  const mk=monthKey(t),a=agg(Object.values(records).filter(x=>monthKey(x.date)===mk));
+  $('hero-stats').innerHTML=
+   '<div class="stat"><div class="v">'+a.present+'</div><div class="l">Present days</div></div>'+
+   '<div class="stat"><div class="v">'+a.ot.toFixed(1)+'</div><div class="l">OT hours</div></div>'+
+   '<div class="stat"><div class="v">'+fmtPct(a.achv)+'</div><div class="l">Achievement</div></div>';
 }
 /* ---------- nav ---------- */
 function switchTab(p){
@@ -551,11 +589,11 @@ function switchTab(p){
   document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
   if(p==='cal')renderCal();if(p==='rep'){renderMonth();renderYear()}if(p==='prod')renderProd();if(p==='set')renderSet();
 }
-function renderAll(){setBadge();loadForm($('f-date').value||istToday());switchTab(document.querySelector('nav.bottom button.on').dataset.p)}
+function renderAll(){setBadge();renderHero();loadForm($('f-date').value||istToday());switchTab(document.querySelector('nav.bottom button.on').dataset.p)}
 /* ---------- boot ---------- */
 function enterApp(){
   $('authscreen').style.display='none';$('appwrap').style.display='block';
-  buildChips();loadForm(istToday());setBadge();renderSet();
+  buildChips();loadForm(istToday());setBadge();renderSet();renderHero();
   if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
   if(cfg.scriptUrl&&pending().length)syncNow(true);
 }
@@ -569,7 +607,7 @@ function wire(){
   $('cal-next').onclick=()=>{calM++;if(calM>11){calM=0;calY++}renderCal()};
   $('r-month').onchange=renderMonth;$('r-year').oninput=renderYear;$('p-month').onchange=renderProd;
   document.querySelectorAll('nav.bottom button').forEach(b=>b.onclick=()=>switchTab(b.dataset.p));
-  $('s-testconn').onclick=async()=>{cfg.scriptUrl=$('s-scripturl').value.trim();cfg.secret=$('s-secret').value;jset(CKEY,cfg);
+  $('s-testconn').onclick=async()=>{cfg.scriptUrl=$('s-scripturl').value.trim();jset(CKEY,cfg);saveSecret($('s-secret').value);
     $('s-syncstate').textContent='Testing...';
     try{await api('ping');$('s-syncstate').textContent='Connection OK at '+istTs()+'.';setBadge()}catch(e){$('s-syncstate').textContent='Test failed: '+e.message}};
   $('s-syncnow').onclick=()=>syncNow(false);
@@ -578,8 +616,7 @@ function wire(){
   $('s-exportjson').onclick=()=>exportData('json');$('s-exportcsv').onclick=()=>exportData('csv');
   $('s-importbtn').onclick=()=>$('s-importfile').click();
   $('s-importfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
-    rd.onload=()=>{try{const d=JSON.parse(rd.result);if(!d.records)throw 0;records=Object.assign({},d.records,records);editlog=(d.editLog||[]).concat(editlog).slice(0,500);jset(RKEY,records);jset(LKEY,editlog);Object.values(records).forEach(r=>r.synced=false);jset(RKEY,records);renderAll();toast('Imported. Records marked unsynced so they merge into Sheets.')}catch(err){toast('That file did not look like a KAKU backup.')}};rd.readAsText(f)};
-  $('s-changepw').onclick=()=>$('s-pwwrap').style.toggleAttribute?0:0;
+    rd.onload=()=>{try{const d=JSON.parse(rd.result);if(!d.records)throw 0;records=Object.assign({},d.records,records);editlog=(d.editLog||[]).concat(editlog).slice(0,500);jset(RKEY,records);jset(LKEY,editlog);Object.keys(d.records).forEach(k=>{if(records[k])records[k].synced=false});jset(RKEY,records);renderAll();toast('Imported. Records marked unsynced so they merge into Sheets.')}catch(err){toast('That file did not look like a KAKU backup.')}};rd.readAsText(f)};
   $('s-changepw').onclick=()=>{const w=$('s-pwwrap');w.style.display=w.style.display==='none'?'block':'none'};
   $('s-pwsave').onclick=async()=>{const a=jget(AKEY,null);if(!a)return;
     if(await derive(a.salt,$('s-pwold').value)!==a.hash)return toast('Current password is wrong');
@@ -595,7 +632,12 @@ function wire(){
   $('f-date').value=istToday();$('r-month').value=monthKey(istToday());$('r-year').value=istToday().slice(0,4);$('p-month').value=monthKey(istToday());
   wire();
   try{$('s-codebox').textContent=await (await fetch('apps-script/Code.gs')).text()}catch(e){$('s-codebox').textContent='(Could not load code box. Open '+location.origin+location.pathname+'apps-script/Code.gs)'}
-  if(authed())enterApp();else bootAuth();
+  if(new URLSearchParams(location.search).has('demo')){
+    window.KWT_DEMO=true;records=makeDemo();cfg.shifts={A:{h:8,t:200},B:{h:8,t:180},C:{h:8,t:180}};enterApp();
+    const v=new URLSearchParams(location.search).get('view');
+    if(v&&['cal','rep','prod','set'].indexOf(v)>=0)switchTab(v);
+  }
+  else if(authed())enterApp();else bootAuth();
 })();
 </script>
 </body>
