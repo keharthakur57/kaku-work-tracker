@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0b1e">
+<meta name="description" content="KAKU WORK TRACKER - attendance, production and performance tracker for Kehar Singh">
+<title>KAKU WORK TRACKER</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root{--bg:#0f0b1e;--bg2:#171130;--card:#1e1840;--card2:#261e52;--line:#3a2f6e;--txt:#f1eefb;--mut:#a99fd0;--acc:#8b5cf6;--acc2:#a78bfa;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--blue:#60a5fa;--vio:#a78bfa;--gray:#94a3b8;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.45}
+#appwrap{max-width:560px;margin:0 auto;min-height:100%;padding-bottom:84px;position:relative}
+header.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#241a4f,#170f33);padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px}
+header.top h1{font-size:17px;font-weight:800;letter-spacing:.4px}
+header.top h1 span{color:var(--acc2)}
+.hdrbtns{display:flex;gap:8px;align-items:center}
+.badge{font-size:11px;font-weight:700;padding:4px 9px;border-radius:99px;background:#31265e;color:var(--mut);white-space:nowrap}
+.badge.warn{background:#4a3a12;color:var(--warn)}
+.badge.ok{background:#123a2b;color:var(--ok)}
+.iconbtn{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:8px 10px;font-size:15px;cursor:pointer}
+main{padding:14px 14px 0}
+.page{display:none}
+.page.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:10px}
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+label{display:block;font-size:12px;color:var(--mut);margin:10px 0 5px;font-weight:600}
+input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--txt);padding:12px;font-size:15px;outline:none;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{resize:vertical;min-height:64px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--bg2);color:var(--txt);border-radius:99px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.chip.sel{background:var(--acc);border-color:var(--acc);color:#fff}
+.chip.s-Present.sel{background:var(--ok);border-color:var(--ok);color:#062}
+.chip.s-Absent.sel{background:var(--bad);border-color:var(--bad)}
+.chip.s-HalfDay.sel{background:var(--warn);border-color:var(--warn);color:#423}
+.btn{display:inline-block;background:var(--acc);color:#fff;border:0;border-radius:14px;padding:14px 18px;font-size:15px;font-weight:700;cursor:pointer;width:100%;text-align:center}
+.btn.sec{background:var(--card2);border:1px solid var(--line);color:var(--txt)}
+.btn.sm{width:auto;padding:9px 14px;font-size:13px;border-radius:12px}
+.btn:disabled{opacity:.5}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.kv:last-child{border-bottom:0}
+.kv b{font-weight:700}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat .v{font-size:20px;font-weight:800}
+.stat .l{font-size:11px;color:var(--mut);margin-top:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+nav.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(23,17,51,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:space-around;max-width:560px;margin:0 auto;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav.bottom button{flex:1;background:0;border:0;color:var(--mut);font-size:10.5px;font-weight:600;padding:6px 2px;cursor:pointer;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav.bottom button .i{font-size:19px}
+nav.bottom button.on{color:var(--acc2);background:#2a2154}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
+.cal .h{font-size:10px;color:var(--mut);text-align:center;font-weight:700}
+.cal .d{aspect-ratio:1;border-radius:10px;background:var(--bg2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;cursor:pointer;position:relative}
+.cal .d.dim{opacity:.35}
+.cal .d.today{border-color:var(--acc);border-width:2px}
+.cal .d .dot{width:7px;height:7px;border-radius:99px;margin-top:2px}
+.mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.mnav b{font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td.num,th.num{text-align:right}
+.pill{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px}
+canvas{width:100%;height:auto;display:block}
+.syncnote{font-size:12px;color:var(--mut);margin-top:8px}
+.qitem{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.hint{font-size:12px;color:var(--mut);margin-top:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:100px;background:#2a2154;color:#fff;padding:11px 18px;border-radius:14px;font-size:13.5px;font-weight:600;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.5);display:none;max-width:88%;text-align:center}
+.err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
+#authscreen{position:fixed;inset:0;z-index:50;background:radial-gradient(1200px 600px at 50% -10%,#33246b, #0f0b1e 60%);display:flex;align-items:center;justify-content:center;padding:20px}
+.authcard{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 22px}
+.authcard h1{font-size:20px;font-weight:800;margin-bottom:4px}
+.authcard h1 span{color:var(--acc2)}
+.authcard p{color:var(--mut);font-size:13px;margin-bottom:16px}
+.biglogo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--acc),#6d28d9);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;margin-bottom:14px}
+details summary{cursor:pointer;color:var(--acc2);font-size:13px;font-weight:600;margin-top:8px}
+pre.code{background:#120d29;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:11px;overflow-x:auto;max-height:180px;overflow-y:auto;white-space:pre}
+ol.steps{padding-left:18px;font-size:13px;color:var(--mut)}
+ol.steps li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<div id="authscreen" style="display:none">
+  <div class="authcard">
+    <div class="biglogo">KT</div>
+    <h1>KAKU <span>WORK TRACKER</span></h1>
+    <p id="authsub">Private attendance &amp; performance tracker for Kehar Singh</p>
+    <label>Email</label><input id="a-email" type="email" inputmode="email" autocomplete="username" placeholder="you@example.com">
+    <label id="a-pwlabel">Password</label><input id="a-pw" type="password" autocomplete="current-password" placeholder="Password">
+    <div id="a-confirmwrap" style="display:none"><label>Confirm password</label><input id="a-pw2" type="password" autocomplete="new-password" placeholder="Repeat password"></div>
+    <div class="err" id="a-err"></div>
+    <div style="height:16px"></div>
+    <button class="btn" id="a-go">Set up account</button>
+    <p class="hint" style="margin-top:12px" id="a-hint">Your password is stored only on this device as a salted hash. It is never sent anywhere, not even to Fo.</p>
+  </div>
+</div>
+
+<div id="appwrap" style="display:none">
+<header class="top">
+  <h1>KAKU <span>WORK TRACKER</span></h1>
+  <div class="hdrbtns">
+    <span class="badge" id="syncbadge">Local</span>
+    <button class="iconbtn" id="pullbtn" title="Pull from Sheets">&#8635;</button>
+  </div>
+</header>
+<main>
+  <!-- TODAY -->
+  <section class="page on" id="page-today">
+    <div class="card">
+      <h2>Daily entry</h2>
+      <div class="row">
+        <div><label>Date</label><input type="date" id="f-date"></div>
+        <div><label>Day</label><input type="text" id="f-day" placeholder="Day"></div>
+      </div>
+      <label>Attendance status</label>
+      <div class="chips" id="f-status"></div>
+      <div id="f-leavewrap" style="display:none"><label>Leave type</label>
+        <select id="f-leavetype"><option>Casual</option><option>Sick</option><option>Earned / Paid</option><option>Unpaid</option><option>Other</option></select></div>
+      <div id="f-holwrap" style="display:none"><label>Holiday name (as you want it recorded)</label><input id="f-holname" placeholder="e.g. Diwali"></div>
+      <div id="f-workwrap">
+        <label>Shift</label>
+        <div class="chips" id="f-shift"></div>
+        <div class="row">
+          <div><label>Hours worked</label><input type="number" id="f-hours" step="0.1" min="0" inputmode="decimal"></div>
+          <div><label>Overtime hours</label><input type="number" id="f-ot" step="0.1" min="0" inputmode="decimal"></div>
+        </div>
+        <div class="row">
+          <div><label>Production units</label><input type="number" id="f-prod" min="0" inputmode="numeric"></div>
+          <div><label>Target units</label><input type="number" id="f-target" min="0" inputmode="numeric"></div>
+        </div>
+        <label>Achievement</label>
+        <div class="kv"><b id="f-achv" style="font-size:18px">-</b><span class="hint" id="f-achvnote" style="margin:0"></span></div>
+      </div>
+      <label>Remarks</label><textarea id="f-remarks" placeholder="Optional notes"></textarea>
+      <div class="err" id="f-err"></div>
+      <div style="height:12px"></div>
+      <button class="btn" id="f-save">Save entry</button>
+      <div class="syncnote" id="f-syncnote"></div>
+    </div>
+    <div class="card" id="today-existing" style="display:none">
+      <h2>This date already saved</h2>
+      <div id="today-existbody"></div>
+      <button class="btn sec sm" id="f-editexisting" style="width:100%;margin-top:10px">Edit this entry</button>
+    </div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="page" id="page-cal">
+    <div class="card">
+      <div class="mnav">
+        <button class="btn sec sm" id="cal-prev">&#8592;</button>
+        <b id="cal-title">Month</b>
+        <button class="btn sec sm" id="cal-next">&#8594;</button>
+      </div>
+      <div class="cal" id="cal-grid"></div>
+      <div class="hint" id="cal-legend" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- REPORTS -->
+  <section class="page" id="page-rep">
+    <div class="card">
+      <h2>Monthly report</h2>
+      <input type="month" id="r-month">
+      <div id="r-monthbody" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+      <h2>Yearly report</h2>
+      <input type="number" id="r-year" min="2000" max="2100" style="max-width:140px">
+      <div id="r-yearbody" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTION -->
+  <section class="page" id="page-prod">
+    <div class="card">
+      <h2>Production &amp; overtime</h2>
+      <input type="month" id="p-month">
+      <div style="height:8px"></div>
+      <canvas id="p-chart" height="180"></canvas>
+      <div id="p-body" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="page" id="page-set">
+    <div class="card">
+      <h2>Account</h2>
+      <div class="kv"><span>Signed in as</span><b id="s-email">-</b></div>
+      <div style="height:10px"></div>
+      <button class="btn sec sm" id="s-changepw">Change password</button>
+      <div id="s-pwwrap" style="display:none;margin-top:10px">
+        <label>Current password</label><input type="password" id="s-pwold">
+        <label>New password</label><input type="password" id="s-pwnew">
+        <div style="height:8px"></div><button class="btn sm" id="s-pwsave">Save new password</button>
+      </div>
+      <div style="height:10px"></div>
+      <button class="btn sec sm" id="s-logout">Log out on this device</button>
+      <p class="hint">Log out keeps your data on this device. Use "Erase device data" below only if you are sure; your Google Sheet keeps everything.</p>
+    </div>
+
+    <div class="card">
+      <h2>Google Sheets sync</h2>
+      <div class="kv"><span>Workbook</span><b style="font-size:12px">KAKU Personal Attendance &amp; Performance Management</b></div>
+      <label>Apps Script web app URL</label><input id="s-scripturl" placeholder="https://script.google.com/macros/s/.../exec">
+      <label>Sync secret (any private phrase, set once)</label><input id="s-secret" type="password" placeholder="Private phrase">
+      <div style="height:10px"></div>
+      <div class="row">
+        <button class="btn sec sm" id="s-testconn">Test connection</button>
+        <button class="btn sm" id="s-syncnow">Sync now</button>
+      </div>
+      <div class="syncnote" id="s-syncstate"></div>
+      <details><summary>One-time backend setup (about 2 minutes)</summary>
+        <ol class="steps">
+          <li>Open your Google Sheet &rarr; <b>Extensions &rarr; Apps Script</b>.</li>
+          <li>Delete any code there and paste the KAKU backend code below.</li>
+          <li><b>Deploy &rarr; New deployment &rarr; Web app</b>. Execute as: <b>Me</b>. Who has access: <b>Anyone</b>. Deploy and authorise.</li>
+          <li>Copy the Web app URL into the field above, choose your secret phrase, tap Test connection.</li>
+        </ol>
+        <button class="btn sec sm" id="s-copycode" style="margin-top:8px">Copy backend code</button>
+        <div class="err" id="s-copyerr"></div>
+        <pre class="code" id="s-codebox">Loading code...</pre>
+      </details>
+      <div class="hint" id="s-queueinfo"></div>
+    </div>
+
+    <div class="card">
+      <h2>Shift defaults</h2>
+      <div class="row"><div><label>Shift A hours</label><input id="s-Ah" type="number" step="0.1"></div><div><label>Shift A target</label><input id="s-At" type="number"></div></div>
+      <div class="row"><div><label>Shift B hours</label><input id="s-Bh" type="number" step="0.1"></div><div><label>Shift B target</label><input id="s-Bt" type="number"></div></div>
+      <div class="row"><div><label>Shift C hours</label><input id="s-Ch" type="number" step="0.1"></div><div><label>Shift C target</label><input id="s-Ct" type="number"></div></div>
+      <button class="btn sec sm" id="s-shiftsave" style="margin-top:10px">Save shift defaults</button>
+    </div>
+
+    <div class="card">
+      <h2>Daily reminder</h2>
+      <div class="kv"><span>Deadline (IST)</span><input id="s-deadline" type="time" style="width:130px"></div>
+      <button class="btn sec sm" id="s-deadlinesave" style="margin-top:10px">Save deadline</button>
+      <p class="hint">Fo reads this deadline and reminds you once a day by text if no entry exists for that date. Sundays, holidays and approved leaves are skipped automatically.</p>
+    </div>
+
+    <div class="card">
+      <h2>Message Fo (hands-free entry)</h2>
+      <div class="kv"><span>Fo's number</span><b>+1 628 997 8995</b></div>
+      <p class="hint" style="margin-top:8px">Text Fo your day in any words, for example: <b>"aaj 8 hours, A shift, 210 units, target 200"</b>. Fo fills missing essentials by asking you, writes it into the same Google workbook (upsert by date), and confirms only after the save succeeds. Fo never invents data. Use "Pull from Sheets" (&#8635; above) to bring Fo's writes into this app.</p>
+    </div>
+
+    <div class="card">
+      <h2>Your data</h2>
+      <div class="row">
+        <button class="btn sec sm" id="s-exportjson">Export JSON</button>
+        <button class="btn sec sm" id="s-exportcsv">Export CSV</button>
+      </div>
+      <div style="height:8px"></div>
+      <button class="btn sec sm" id="s-importbtn">Import JSON backup</button>
+      <input type="file" id="s-importfile" accept=".json" style="display:none">
+      <p class="hint">Everything is exportable and lives in your own Google Sheet, so your records stay yours even after this employment ends.</p>
+    </div>
+
+    <div class="card">
+      <h2>Edit log (this device)</h2>
+      <div id="s-log"></div>
+    </div>
+
+    <div class="card">
+      <h2>Danger zone</h2>
+      <button class="btn sec sm" id="s-wipe" style="border-color:var(--bad);color:var(--bad)">Erase device data</button>
+    </div>
+  </section>
+</main>
+<nav class="bottom">
+  <button data-p="today" class="on"><span class="i">&#9997;</span>Today</button>
+  <button data-p="cal"><span class="i">&#128467;</span>Calendar</button>
+  <button data-p="rep"><span class="i">&#128202;</span>Reports</button>
+  <button data-p="prod"><span class="i">&#9889;</span>Production</button>
+  <button data-p="set"><span class="i">&#9881;</span>Settings</button>
+</nav>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const STATUSES=['Present','Absent','Half Day','Leave','Holiday','Sunday Off'];
+const SCOLORS={Present:'#34d399',Absent:'#f87171','Half Day':'#fbbf24',Leave:'#60a5fa',Holiday:'#a78bfa','Sunday Off':'#94a3b8'};
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const RKEY='kwt_records',LKEY='kwt_log',CKEY='kwt_cfg',AKEY='kwt_auth';
+function jget(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
+function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
+let records=jget(RKEY,{}),editlog=jget(LKEY,[]),cfg=jget(CKEY,{scriptUrl:'',secret:'',shifts:{},deadline:'20:00'});
+function istToday(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata'}).format(new Date())}
+function dayName(ds){const[y,m,d]=ds.split('-').map(Number);return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(y,m-1,d).getDay()]}
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2600)}
+function showErr(id,m){const e=$(id);e.textContent=m;e.style.display=m?'block':'none'}
+function achv(p,t){if(p===''||p==null||t===''||t==null||Number(t)===0)return null;return Number(p)/Number(t)}
+function fmtPct(x){return x==null?'-':(x*100).toFixed(1)+'%'}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function monthKey(ds){return ds.slice(0,7)}
+/* ---------- auth ---------- */
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function derive(salt,pw){let h=salt+':'+pw;for(let i=0;i<300;i++)h=await sha256(h);return h}
+function authed(){return sessionStorage.getItem('kwt_session')==='1'}
+function bootAuth(){
+  const a=jget(AKEY,null);const setup=!a;
+  $('authscreen').style.display='flex';
+  $('a-confirmwrap').style.display=setup?'block':'none';
+  $('a-go').textContent=setup?'Create my login':'Log in';
+  $('a-pw').autocomplete=setup?'new-password':'current-password';
+  $('a-go').onclick=async()=>{
+    const em=$('a-email').value.trim().toLowerCase(),pw=$('a-pw').value;
+    showErr('a-err','');
+    if(!em||!em.includes('@'))return showErr('a-err','Enter a valid email.');
+    if(pw.length<6)return showErr('a-err','Password must be at least 6 characters.');
+    if(setup){
+      if(pw!==$('a-pw2').value)return showErr('a-err','Passwords do not match.');
+      const salt=crypto.getRandomValues(new Uint8Array(16)).join('');
+      jset(AKEY,{email:em,salt,hash:await derive(salt,pw)});
+      sessionStorage.setItem('kwt_session','1');enterApp();
+    }else{
+      if(em!==a.email){return showErr('a-err','Wrong email for this device.')}
+      if(await derive(a.salt,pw)!==a.hash){return showErr('a-err','Wrong password.')}
+      sessionStorage.setItem('kwt_session','1');enterApp();
+    }
+  };
+}
+/* ---------- data ---------- */
+function saveRec(r){
+  const old=records[r.date];const ts=istTs();
+  let log=[];
+  if(old){
+    ['status','shift','hours','ot','prod','target','remarks','leaveType','holidayName','day'].forEach(f=>{
+      const nv=r[f],ov=old[f];
+      if(String(nv==null?'':nv)!==String(ov==null?'':ov)&&!(nv==''&&ov==undefined)){
+        log.push({ts,date:r.date,field:f,old:ov==null?'':ov,new:nv==null?'':nv});
+        old[f]=nv;
+      }
+    });
+    old.updated=ts;old.synced=false;
+  }else{records[r.date]=Object.assign({},r,{updated:ts,synced:false});log.push({ts,date:r.date,field:'created',old:'',new:'new entry'})}
+  editlog=log.concat(editlog).slice(0,500);jset(LKEY,editlog);jset(RKEY,records);
+}
+function istTs(){const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const g=t=>p.find(x=>x.type===t).value;return g('year')+'-'+g('month')+'-'+g('day')+' '+g('hour')+':'+g('minute')+' IST'}
+function pending(){return Object.values(records).filter(r=>!r.synced)}
+/* ---------- sync ---------- */
+function setBadge(){
+  const n=pending().length,b=$('syncbadge');
+  if(!cfg.scriptUrl){b.textContent=n?('Local · '+n+' unsynced'):'Local';b.className='badge'+(n?' warn':'')}
+  else if(n){b.textContent=n+' unsynced';b.className='badge warn'}
+  else{b.textContent='Synced';b.className='badge ok'}
+}
+async function api(action,extra){
+  if(!cfg.scriptUrl)throw new Error('not-configured');
+  const res=await fetch(cfg.scriptUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({secret:cfg.secret,action},extra||{}))});
+  const t=await res.text();let j;try{j=JSON.parse(t)}catch(e){throw new Error('Bad response from script: '+t.slice(0,120))}
+  if(!j.ok)throw new Error(j.error||'Unknown error');
+  return j;
+}
+async function syncNow(silent){
+  const q=pending();setBadge();
+  if(!cfg.scriptUrl){if(!silent)toast('Connect the Apps Script URL in Settings first');return false}
+  if(!q.length){if(!silent)toast('Everything already synced');return true}
+  try{
+    const j=await api('upsert',{records:q});
+    q.forEach(r=>{const k=r.date;if(records[k])records[k].synced=true});
+    jset(RKEY,records);setBadge();
+    if(!silent)toast('Synced '+j.saved+' record(s) to Google Sheets');
+    $('s-syncstate')&&($('s-syncstate').textContent='Last sync: '+istTs()+' OK, '+j.saved+' record(s).');
+    return true;
+  }catch(e){
+    setBadge();if(!silent)toast('Sync failed: '+e.message+' (kept locally, will retry)');
+    if($('s-syncstate'))$('s-syncstate').textContent='Last sync failed: '+e.message+' Records are safe on this device and stay queued.';
+    return false;
+  }
+}
+async function pull(){
+  if(!cfg.scriptUrl)return toast('Connect the Apps Script URL in Settings first');
+  try{
+    const j=await api('getAll');let n=0;
+    (j.records||[]).forEach(sr=>{
+      const k=sr.date;const lo=records[k];
+      if(!lo||String(lo.updated||'')<String(sr.updated||'')){records[k]=Object.assign({},sr,{synced:true});n++}
+      else records[k].synced=true;
+    });
+    jset(RKEY,records);setBadge();toast('Pulled '+n+' record(s) from Sheets');renderAll();
+  }catch(e){toast('Pull failed: '+e.message)}
+}
+/* ---------- today form ---------- */
+let curStatus='',curShift='';
+function buildChips(){
+  $('f-status').innerHTML=STATUSES.map(s=>'<button class="chip s-'+s.replace(' ','')+'" data-v="'+s+'">'+s+'</button>').join('');
+  $('f-shift').innerHTML=['A','B','C'].map(s=>'<button class="chip" data-v="'+s+'">Shift '+s+'</button>').join('');
+  $('f-status').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;pickStatus(b.dataset.v)};
+  $('f-shift').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;curShift=b.dataset.v;[...$('f-shift').children].forEach(c=>c.classList.toggle('sel',c.dataset.v===curShift))};
+}
+function pickStatus(s){curStatus=s;[...$('f-status').children].forEach(c=>c.classList.toggle('sel',c.dataset.v===s));
+  $('f-workwrap').style.display=(s==='Present'||s==='Half Day')?'block':'none';
+  $('f-leavewrap').style.display=s==='Leave'?'block':'none';
+  $('f-holwrap').style.display=s==='Holiday'?'block':'none';
+}
+function loadForm(date){
+  $('f-date').value=date;$('f-day').value=dayName(date);
+  const r=records[date];
+  if(r){pickStatus(r.status||'');curShift=r.shift||'';[...$('f-shift').children].forEach(c=>c.classList.toggle('sel',c.dataset.v===curShift));
+    $('f-hours').value=r.hours??'';$('f-ot').value=r.ot??'';$('f-prod').value=r.prod??'';$('f-target').value=r.target??'';
+    $('f-remarks').value=r.remarks||'';$('f-leavetype').value=r.leaveType||'Casual';$('f-holname').value=r.holidayName||'';
+    $('today-existing').style.display='block';
+    $('today-existbody').innerHTML='<div class="kv"><span>Status</span><b>'+esc(r.status)+'</b></div><div class="kv"><span>Saved at</span><b>'+esc(r.updated||'')+'</b></div><div class="kv"><span>Sync state</span><b>'+(r.synced?'Synced to Sheets':'On device only')+'</b></div>';
+  }else{
+    pickStatus('');curShift='';['f-hours','f-ot','f-prod','f-target','f-remarks','f-holname'].forEach(i=>$(i).value='');
+    $('f-leavetype').value='Casual';$('today-existing').style.display='none';
+    $('f-remarks').value='';
+  }
+  updAchv();
+}
+function updAchv(){
+  const a=achv($('f-prod').value,$('f-target').value);
+  $('f-achv').textContent=fmtPct(a);
+  $('f-achv').style.color=a==null?'var(--txt)':(a>=1?'var(--ok)':a>=0.85?'var(--warn)':'var(--bad)');
+  $('f-achvnote').textContent=a==null?'enter production & target':'';
+}
+function saveForm(){
+  const date=$('f-date').value;
+  showErr('f-err','');
+  if(!date)return showErr('f-err','Pick a date.');
+  if(!curStatus)return showErr('f-err','Pick an attendance status.');
+  if(curStatus==='Holiday'&&$('f-holname').value.trim()===''&&!records[date])return showErr('f-err','Holiday name is needed the first time a holiday is recorded (or use remarks).');
+  const r={date,day:$('f-day').value||dayName(date),status:curStatus,shift:(curStatus==='Present'||curStatus==='Half Day')?curShift:'',
+    hours:(curStatus==='Present'||curStatus==='Half Day')?($('f-hours').value||''):(''),
+    ot:(curStatus==='Present'||curStatus==='Half Day')?($('f-ot').value||''):'',
+    prod:(curStatus==='Present'||curStatus==='Half Day')?($('f-prod').value||''):'',
+    target:(curStatus==='Present'||curStatus==='Half Day')?($('f-target').value||''):'',
+    leaveType:curStatus==='Leave'?$('f-leavetype').value:'',holidayName:curStatus==='Holiday'?$('f-holname').value.trim():'',
+    remarks:$('f-remarks').value.trim()};
+  saveRec(r);loadForm(date);setBadge();
+  toast('Saved'+(records[date].synced?'':' (queued for sync)'));
+  syncNow(true);
+}
+/* ---------- calendar ---------- */
+let calY,calM;
+function renderCal(){
+  $('cal-title').textContent=MONTHS[calM]+' '+calY;
+  const first=new Date(calY,calM,1),days=new Date(calY,calM+1,0).getDate();
+  const today=istToday();let h='';
+  ['S','M','T','W','T','F','S'].forEach(x=>h+='<div class="h">'+x+'</div>');
+  for(let i=0;i<first.getDay();i++)h+='<div class="d dim"></div>';
+  for(let d=1;d<=days;d++){
+    const ds=calY+'-'+String(calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const r=records[ds];
+    h+='<div class="d'+(ds===today?' today':'')+'" data-d="'+ds+'">'+d+(r?'<span class="dot" style="background:'+SCOLORS[r.status]+'"></span>':'')+'</div>';
+  }
+  $('cal-grid').innerHTML=h;
+  $('cal-grid').onclick=e=>{const el=e.target.closest('.d');if(!el||!el.dataset.d)return;switchTab('today');loadForm(el.dataset.d)};
+  $('cal-legend').innerHTML=STATUSES.map(s=>'<span style="color:'+SCOLORS[s]+'">&#9679;</span> '+s).join(' &nbsp; ');
+}
+/* ---------- reports ---------- */
+function agg(list){
+  const a={present:0,absent:0,half:0,leave:0,holiday:0,sunday:0,hours:0,ot:0,prod:0,target:0,n:0};
+  list.forEach(r=>{a.n++;
+    if(r.status==='Present')a.present++;else if(r.status==='Absent')a.absent++;else if(r.status==='Half Day')a.half++;
+    else if(r.status==='Leave')a.leave++;else if(r.status==='Holiday')a.holiday++;else if(r.status==='Sunday Off')a.sunday++;
+    a.hours+=Number(r.hours||0);a.ot+=Number(r.ot||0);a.prod+=Number(r.prod||0);a.target+=Number(r.target||0)});
+  a.achv=a.target?achv(a.prod,a.target):null;return a;
+}
+function renderMonth(){
+  const mk=$('r-month').value||monthKey(istToday());$('r-month').value=mk;
+  const list=Object.values(records).filter(r=>monthKey(r.date)===mk);
+  if(!list.length){$('r-monthbody').innerHTML='<p class="hint">No entries for '+MONTHS[Number(mk.slice(5,7))-1]+' '+mk.slice(0,4)+' yet.</p>';return}
+  const a=agg(list);
+  $('r-monthbody').innerHTML='<div class="grid3">'+
+    '<div class="stat"><div class="v">'+a.present+'</div><div class="l">Present</div></div>'+
+    '<div class="stat"><div class="v">'+a.absent+'</div><div class="l">Absent</div></div>'+
+    '<div class="stat"><div class="v">'+a.half+'</div><div class="l">Half day</div></div>'+
+    '<div class="stat"><div class="v">'+a.leave+'</div><div class="l">Leave</div></div>'+
+    '<div class="stat"><div class="v">'+a.holiday+'</div><div class="l">Holiday</div></div>'+
+    '<div class="stat"><div class="v">'+a.sunday+'</div><div class="l">Sunday off</div></div></div>'+
+    '<div style="height:10px"></div><div class="kv"><span>Total hours</span><b>'+a.hours.toFixed(1)+'</b></div>'+
+    '<div class="kv"><span>Overtime hours</span><b>'+a.ot.toFixed(1)+'</b></div>'+
+    '<div class="kv"><span>Production</span><b>'+a.prod+' / '+a.target+'</b></div>'+
+    '<div class="kv"><span>Achievement</span><b>'+fmtPct(a.achv)+'</b></div>';
+}
+function renderYear(){
+  const y=$('r-year').value||istToday().slice(0,4);$('r-year').value=y;
+  let rows='',ta=agg(Object.values(records).filter(r=>r.date.slice(0,4)===y));
+  MONTHS.forEach((m,i)=>{
+    const mk=y+'-'+String(i+1).padStart(2,'0');
+    const a=agg(Object.values(records).filter(r=>monthKey(r.date)===mk));
+    rows+='<tr><td>'+m.slice(0,3)+'</td><td class="num">'+a.present+'</td><td class="num">'+a.absent+'</td><td class="num">'+a.leave+'</td><td class="num">'+a.hours.toFixed(0)+'</td><td class="num">'+a.ot.toFixed(0)+'</td><td class="num">'+a.prod+'</td><td class="num">'+fmtPct(a.achv)+'</td></tr>';
+  });
+  $('r-yearbody').innerHTML='<table><tr><th>Month</th><th class="num">P</th><th class="num">A</th><th class="num">L</th><th class="num">Hrs</th><th class="num">OT</th><th class="num">Prod</th><th class="num">Achv</th></tr>'+rows+
+    '<tr><td><b>Year</b></td><td class="num"><b>'+ta.present+'</b></td><td class="num"><b>'+ta.absent+'</b></td><td class="num"><b>'+ta.leave+'</b></td><td class="num"><b>'+ta.hours.toFixed(0)+'</b></td><td class="num"><b>'+ta.ot.toFixed(0)+'</b></td><td class="num"><b>'+ta.prod+'</b></td><td class="num"><b>'+fmtPct(ta.achv)+'</b></td></tr></table>';
+}
+/* ---------- production ---------- */
+function renderProd(){
+  const mk=$('p-month').value||monthKey(istToday());$('p-month').value=mk;
+  const list=Object.values(records).filter(r=>monthKey(r.date)===mk&&(r.prod!==''&&r.prod!=null||Number(r.ot)>0)).sort((x,y)=>x.date<y.date?-1:1);
+  const a=agg(Object.values(records).filter(r=>monthKey(r.date)===mk));
+  drawChart($('p-chart'),list);
+  let h='<div class="kv"><span>Month production</span><b>'+a.prod+' / '+a.target+' ('+fmtPct(a.achv)+')</b></div><div class="kv"><span>Month overtime</span><b>'+a.ot.toFixed(1)+' hrs</b></div>';
+  if(!list.length)h+='<p class="hint">No production or overtime entries this month.</p>';
+  else{h+='<table><tr><th>Date</th><th class="num">Prod</th><th class="num">Target</th><th class="num">Eff</th><th class="num">OT</th></tr>';
+    list.forEach(r=>{const e=achv(r.prod,r.target);h+='<tr><td>'+r.date.slice(8)+'/'+r.date.slice(5,7)+'</td><td class="num">'+esc(r.prod)+'</td><td class="num">'+esc(r.target)+'</td><td class="num">'+fmtPct(e)+'</td><td class="num">'+esc(r.ot)+'</td></tr>'});
+    h+='</table>'}
+  $('p-body').innerHTML=h;
+}
+function drawChart(cv,list){
+  const ctx=cv.getContext('2d');const W=cv.width=cv.offsetWidth*2||600,H=cv.height=360;ctx.scale(1,1);
+  ctx.clearRect(0,0,W,H);
+  if(!list.length){ctx.fillStyle='#a99fd0';ctx.font='24px system-ui';ctx.fillText('No data yet',20,60);return}
+  const max=Math.max(1,...list.map(r=>Math.max(Number(r.prod||0),Number(r.target||0))));
+  const bw=Math.min(30*2,W/(list.length*2.2));
+  list.forEach((r,i)=>{
+    const x=20+i*((W-40)/list.length);
+    const p=Number(r.prod||0)/max*(H-70),t=Number(r.target||0)/max*(H-70);
+    ctx.fillStyle='#8b5cf6';ctx.fillRect(x,H-40-p,bw/2,p);
+    ctx.fillStyle='#48397a';ctx.fillRect(x+bw/2+2,H-40-t,bw/2,t);
+    ctx.fillStyle='#a99fd0';ctx.font='18px system-ui';ctx.fillText(r.date.slice(8),x,H-22);
+  });
+}
+/* ---------- settings ---------- */
+function renderSet(){
+  const a=jget(AKEY,{email:''});$('s-email').textContent=a.email||'-';
+  $('s-scripturl').value=cfg.scriptUrl||'';$('s-secret').value=cfg.secret||'';$('s-deadline').value=cfg.deadline||'20:00';
+  const s=cfg.shifts||{};['A','B','C'].forEach(k=>{$('s-'+k+'h').value=(s[k]&&s[k].h)||'';$('s-'+k+'t').value=(s[k]&&s[k].t)||''});
+  const q=pending();
+  $('s-queueinfo').textContent=cfg.scriptUrl?(q.length?q.length+' record(s) waiting to sync. Records never leave this device until a sync succeeds.':'All local records are synced.'):'Not connected yet. Records are kept safely on this device and sync automatically once you connect.';
+  $('s-log').innerHTML=editlog.length?editlog.slice(0,40).map(l=>'<div class="qitem"><span>'+esc(l.date)+' · '+esc(l.field)+'</span><span style="color:var(--mut);font-size:12px">'+esc(l.ts)+'</span></div>').join(''):'<p class="hint">No edits yet.</p>';
+}
+function exportData(kind){
+  const list=Object.values(records);
+  let blob;
+  if(kind==='json'){blob=new Blob([JSON.stringify({exported:istTs(),records:records,editLog:editlog},null,2)],{type:'application/json'})}
+  else{
+    const head='date,day,status,shift,hours,overtime,production,target,achievement_pct,remarks,leave_type,holiday_name,updated\n';
+    const rows=list.map(r=>[r.date,r.day,r.status,r.shift,r.hours,r.ot,r.prod,r.target,r.prod&&r.target?((r.prod/r.target)*100).toFixed(1):'',(r.remarks||'').replace(/"/g,'""'),r.leaveType||'',r.holidayName||'',r.updated||''].map(v=>'"'+String(v==null?'':v)+'"').join(',')).join('\n');
+    blob=new Blob([head+rows],{type:'text/csv'});
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kaku-work-tracker-'+istToday()+(kind==='json'?'.json':'.csv');a.click();
+}
+/* ---------- nav ---------- */
+function switchTab(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  $('page-'+p).classList.add('on');
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  if(p==='cal')renderCal();if(p==='rep'){renderMonth();renderYear()}if(p==='prod')renderProd();if(p==='set')renderSet();
+}
+function renderAll(){setBadge();loadForm($('f-date').value||istToday());switchTab(document.querySelector('nav.bottom button.on').dataset.p)}
+/* ---------- boot ---------- */
+function enterApp(){
+  $('authscreen').style.display='none';$('appwrap').style.display='block';
+  buildChips();loadForm(istToday());setBadge();renderSet();
+  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+  if(cfg.scriptUrl&&pending().length)syncNow(true);
+}
+function wire(){
+  $('pullbtn').onclick=pull;
+  $('f-date').onchange=()=>loadForm($('f-date').value||istToday());
+  $('f-prod').oninput=$('f-target').oninput=updAchv;
+  $('f-save').onclick=saveForm;
+  $('f-editexisting').onclick=()=>{const d=$('f-date').value;loadForm(d);window.scrollTo(0,0)};
+  $('cal-prev').onclick=()=>{calM--;if(calM<0){calM=11;calY--}renderCal()};
+  $('cal-next').onclick=()=>{calM++;if(calM>11){calM=0;calY++}renderCal()};
+  $('r-month').onchange=renderMonth;$('r-year').oninput=renderYear;$('p-month').onchange=renderProd;
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.onclick=()=>switchTab(b.dataset.p));
+  $('s-testconn').onclick=async()=>{cfg.scriptUrl=$('s-scripturl').value.trim();cfg.secret=$('s-secret').value;jset(CKEY,cfg);
+    $('s-syncstate').textContent='Testing...';
+    try{await api('ping');$('s-syncstate').textContent='Connection OK at '+istTs()+'.';setBadge()}catch(e){$('s-syncstate').textContent='Test failed: '+e.message}};
+  $('s-syncnow').onclick=()=>syncNow(false);
+  $('s-deadlinesave').onclick=()=>{cfg.deadline=$('s-deadline').value||'20:00';jset(CKEY,cfg);toast('Reminder deadline saved. Tell Fo to switch reminders on when you are ready.')};
+  $('s-shiftsave').onclick=()=>{cfg.shifts={A:{h:$('s-Ah').value,t:$('s-At').value},B:{h:$('s-Bh').value,t:$('s-Bt').value},C:{h:$('s-Ch').value,t:$('s-Ct').value}};jset(CKEY,cfg);toast('Shift defaults saved')};
+  $('s-exportjson').onclick=()=>exportData('json');$('s-exportcsv').onclick=()=>exportData('csv');
+  $('s-importbtn').onclick=()=>$('s-importfile').click();
+  $('s-importfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+    rd.onload=()=>{try{const d=JSON.parse(rd.result);if(!d.records)throw 0;records=Object.assign({},d.records,records);editlog=(d.editLog||[]).concat(editlog).slice(0,500);jset(RKEY,records);jset(LKEY,editlog);Object.values(records).forEach(r=>r.synced=false);jset(RKEY,records);renderAll();toast('Imported. Records marked unsynced so they merge into Sheets.')}catch(err){toast('That file did not look like a KAKU backup.')}};rd.readAsText(f)};
+  $('s-changepw').onclick=()=>$('s-pwwrap').style.toggleAttribute?0:0;
+  $('s-changepw').onclick=()=>{const w=$('s-pwwrap');w.style.display=w.style.display==='none'?'block':'none'};
+  $('s-pwsave').onclick=async()=>{const a=jget(AKEY,null);if(!a)return;
+    if(await derive(a.salt,$('s-pwold').value)!==a.hash)return toast('Current password is wrong');
+    if($('s-pwnew').value.length<6)return toast('New password too short (min 6)');
+    a.hash=await derive(a.salt,$('s-pwnew').value);jset(AKEY,a);$('s-pwwrap').style.display='none';toast('Password changed')};
+  $('s-logout').onclick=()=>{sessionStorage.removeItem('kwt_session');location.reload()};
+  $('s-wipe').onclick=()=>{if(confirm('Erase ALL data on this device? Your Google Sheet keeps what was already synced. This cannot be undone.')){localStorage.removeItem(RKEY);localStorage.removeItem(LKEY);localStorage.removeItem(CKEY);sessionStorage.removeItem('kwt_session');location.reload()}};
+  $('s-copycode').onclick=async()=>{try{await navigator.clipboard.writeText($('s-codebox').textContent);toast('Backend code copied. Paste it into Apps Script.')}catch(e){showErr('s-copyerr','Copy failed. Long-press the code box to select all and copy manually.')}};
+  window.addEventListener('online',()=>{if(cfg.scriptUrl&&pending().length)syncNow(true)});
+}
+(async function init(){
+  calY=Number(istToday().slice(0,4));calM=Number(istToday().slice(5,7))-1;
+  $('f-date').value=istToday();$('r-month').value=monthKey(istToday());$('r-year').value=istToday().slice(0,4);$('p-month').value=monthKey(istToday());
+  wire();
+  try{$('s-codebox').textContent=await (await fetch('apps-script/Code.gs')).text()}catch(e){$('s-codebox').textContent='(Could not load code box. Open '+location.origin+location.pathname+'apps-script/Code.gs)'}
+  if(authed())enterApp();else bootAuth();
+})();
+</script>
+</body>
+</html>

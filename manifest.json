@@ -1,0 +1,13 @@
+{
+  "name": "KAKU WORK TRACKER",
+  "short_name": "KAKU WT",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f0b1e",
+  "theme_color": "#0f0b1e",
+  "description": "Personal attendance, production and performance tracker for Kehar Singh",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
